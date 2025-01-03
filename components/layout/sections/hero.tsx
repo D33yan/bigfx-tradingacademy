@@ -1,6 +1,4 @@
 "use client";
-
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Play, Twitter, Instagram, Send, Phone, Linkedin } from 'lucide-react';
 import { motion, AnimatePresence } from "framer-motion";
