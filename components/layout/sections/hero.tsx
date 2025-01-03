@@ -1,7 +1,7 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Play, Twitter, Instagram, Send, Phone, Linkedin } from 'lucide-react';
-import { motion, AnimatePresence } from "framer-motion";
+import { motion} from "framer-motion";
 import { useState, useEffect } from "react";
 import Particles from "react-tsparticles";
 import { loadFull } from "tsparticles";
