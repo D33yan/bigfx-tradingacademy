@@ -1,4 +1,4 @@
-import { Separator } from "@/components/ui/separator";
+
 import { ChevronsDownIcon } from "lucide-react";
 import Link from "next/link";
 
@@ -100,7 +100,7 @@ export const FooterSection = () => {
           </div>
         </div>
 
-        <Separator className="my-6" />
+       
         <section className="">
           <h3 className="">
             &copy; 2024 Designed and developed by
