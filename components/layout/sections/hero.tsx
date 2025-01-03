@@ -241,11 +241,11 @@ export const HeroSection = () => {
         transition={{ duration: 0.8, delay: 1.6 }}
       >
         {[
-          { icon: <Twitter size={24} />, href: "https://twitter.com/bigfx", color: "#1DA1F2" },
+          { icon: <Twitter size={24} />, href: "https://twitter.com/@louisemmy039", color: "#1DA1F2" },
           { icon: <Instagram size={24} />, href: "https://instagram.com/bigfx", color: "#E1306C" },
-          { icon: <Send size={24} />, href: "https://t.me/bigfx", color: "#0088cc" },
-          { icon: <Phone size={24} />, href: "https://wa.me/1234567890", color: "#25D366" },
-          { icon: <Linkedin size={24} />, href: "https://linkedin.com/company/bigfx", color: "#0077B5" },
+          { icon: <Send size={24} />, href: "https://t.me/@BigFx22", color: "#0088cc" },
+          { icon: <Phone size={24} />, href: "https://wa.me/message/45R3MSCOVOEPA1", color: "#25D366" },
+          { icon: <Linkedin size={24} />, href: "https://www.tiktok.com/@big_fxxx?_t=ZM-8skHniMl7eI&_r=1", color: "#0077B5" },
         ].map((item, index) => (
           <motion.a
             key={index}
