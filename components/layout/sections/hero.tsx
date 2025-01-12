@@ -1,11 +1,20 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Play, Twitter, Instagram, Send, Phone, Linkedin } from 'lucide-react';
+import Link from "next/link";
+import {
+  ArrowRight,
+  Play,
+  Twitter,
+  Instagram,
+  Send,
+  Phone,
+  Linkedin,
+} from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useState, useEffect } from "react";
 
-export const HeroSection = () => {
+export const HeroSection = ({ id }: { id: string }) => {
   const [isVideoPlaying, setIsVideoPlaying] = useState(true);
   const [tickerItems, setTickerItems] = useState([
     "BTC/USD +5.2%",
@@ -18,7 +27,7 @@ export const HeroSection = () => {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setTickerItems(prev => {
+      setTickerItems((prev) => {
         const newItems = [...prev];
         newItems.push(newItems.shift() as string);
         return newItems;
@@ -29,7 +38,7 @@ export const HeroSection = () => {
   }, []);
 
   const toggleVideo = () => {
-    const video = document.querySelector('video');
+    const video = document.querySelector("video");
     if (video) {
       if (isVideoPlaying) {
         video.pause();
@@ -43,7 +52,7 @@ export const HeroSection = () => {
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
       {/* Animated Background */}
-      <motion.div 
+      <motion.div
         className="absolute inset-0 z-0"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -136,16 +145,18 @@ export const HeroSection = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.8 }}
             >
-              <Button className="w-full md:w-auto font-bold text-lg md:text-xl px-8 py-4 md:py-6 group bg-gradient-to-r from-[#2b5ba8] to-[#1e4c8f] text-white hover:from-[#1e4c8f] hover:to-[#2b5ba8] transition-all duration-300 transform hover:scale-105 rounded-full shadow-lg hover:shadow-xl">
-                Start Trading Now
-                <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" />
-              </Button>
+              <Link href={`#contact`}>
+                <Button className="w-full md:w-auto font-bold text-lg md:text-xl px-8 py-4 md:py-6 group bg-gradient-to-r from-[#2b5ba8] to-[#1e4c8f] text-white hover:from-[#1e4c8f] hover:to-[#2b5ba8] transition-all duration-300 transform hover:scale-105 rounded-full shadow-lg hover:shadow-xl">
+                  Start Trading Now
+                  <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" />
+                </Button>
+              </Link>
               <Button
                 variant="outline"
                 className="w-full md:w-auto font-bold text-lg md:text-xl px-8 py-4 md:py-6 group bg-transparent text-white border-white hover:bg-white/10 transition-all duration-300 transform hover:scale-105 rounded-full"
                 onClick={toggleVideo}
               >
-                {isVideoPlaying ? 'Pause' : 'Play'} Video
+                {isVideoPlaying ? "Pause" : "Play"} Video
                 <Play className="ml-2 w-6 h-6" />
               </Button>
             </motion.div>
@@ -159,10 +170,10 @@ export const HeroSection = () => {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, delay: 1.4 }}
       >
-        <motion.div 
+        <motion.div
           className="flex space-x-4"
           animate={{ x: [0, -100] }}
-          transition={{ 
+          transition={{
             x: {
               repeat: Infinity,
               repeatType: "loop",
@@ -189,11 +200,31 @@ export const HeroSection = () => {
         transition={{ duration: 0.8, delay: 1.6 }}
       >
         {[
-          { icon: <Twitter size={24} />, href: "https://twitter.com/@louisemmy039", color: "#1DA1F2" },
-          { icon: <Instagram size={24} />, href: "https://instagram.com/bigfx", color: "#E1306C" },
-          { icon: <Send size={24} />, href: "https://t.me/@BigFx22", color: "#0088cc" },
-          { icon: <Phone size={24} />, href: "https://wa.me/message/45R3MSCOVOEPA1", color: "#25D366" },
-          { icon: <Linkedin size={24} />, href: "https://www.tiktok.com/@big_fxxx?_t=ZM-8skHniMl7eI&_r=1", color: "#0077B5" },
+          {
+            icon: <Twitter size={24} />,
+            href: "https://x.com/louisemmy039?t=2Q9UH4B09BTWnbPEBEv3uw&s=09",
+            color: "#1DA1F2",
+          },
+          {
+            icon: <Instagram size={24} />,
+            href: "https://instagram.com/bigfx",
+            color: "#E1306C",
+          },
+          {
+            icon: <Send size={24} />,
+            href: "https://t.me/BigFx22",
+            color: "#0088cc",
+          },
+          {
+            icon: <Phone size={24} />,
+            href: "https://wa.me/message/45R3MSCOVOEPA1",
+            color: "#25D366",
+          },
+          {
+            icon: <Linkedin size={24} />,
+            href: "https://www.tiktok.com/@big_fxxx?_t=ZM-8skHniMl7eI&_r=1",
+            color: "#0077B5",
+          },
         ].map((item, index) => (
           <motion.a
             key={index}

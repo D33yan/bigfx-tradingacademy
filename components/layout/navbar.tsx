@@ -3,8 +3,8 @@
 import React, { useState, useEffect } from "react"
 import Link from "next/link"
 import Image from "next/image"
-import { motion, AnimatePresence } from "framer-motion"
-import { ChevronsDown, Menu, X } from 'lucide-react'
+import { motion } from "framer-motion"
+import { Menu } from 'lucide-react'
 import {
   Sheet,
   SheetContent,
@@ -34,6 +34,7 @@ const routeList: RouteProps[] = [
 export const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
+  const [activeSection, setActiveSection] = useState<string>("")
 
   useEffect(() => {
     const handleScroll = () => {
@@ -44,13 +45,45 @@ export const Navbar = () => {
     return () => window.removeEventListener("scroll", handleScroll)
   }, [])
 
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setActiveSection(entry.target.id)
+          }
+        })
+      },
+      { threshold: 0.5 }
+    )
+
+    routeList.forEach(({ href }) => {
+      const section = document.querySelector(href)
+      if (section) {
+        observer.observe(section)
+      }
+    })
+
+    return () => {
+      routeList.forEach(({ href }) => {
+        const section = document.querySelector(href)
+        if (section) {
+          observer.unobserve(section)
+        }
+      })
+    }
+  }, [])
+
+  const handleScrollToSection = (id: string) => {
+    const section = document.getElementById(id)
+    if (section) {
+      section.scrollIntoView({ behavior: "smooth" })
+    }
+  }
+
   return (
     <motion.header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        scrolled 
-          ? "bg-gradient-to-r from-black/80 via-[#1e3a8a]/80 to-black/80 backdrop-blur-md py-2" 
-          : "bg-transparent py-4"
-      }`}
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? "bg-gradient-to-r from-black/80 via-[#1e3a8a]/80 to-black/80 backdrop-blur-md py-2" : "bg-transparent py-4"}`}
       initial={{ y: -100 }}
       animate={{ y: 0 }}
       transition={{ duration: 0.5 }}
@@ -67,15 +100,18 @@ export const Navbar = () => {
             <NavigationMenuList className="flex space-x-8">
               {routeList.map(({ href, label }) => (
                 <NavigationMenuItem key={href}>
-                  <Link href={href} passHref>
-                    <motion.span
-                      className="text-white hover:text-[#4a8eff] transition-colors cursor-pointer text-lg"
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.95 }}
+                  <motion.div
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                  >
+                    <Button
+                      variant="ghost"
+                      className={`text-lg transition-all rounded-full ${activeSection === href.slice(1) ? "bg-[#4a8eff] text-white scale-105" : "text-white hover:bg-[#4a8eff]"}`}
+                      onClick={() => handleScrollToSection(href.slice(1))}
                     >
                       {label}
-                    </motion.span>
-                  </Link>
+                    </Button>
+                  </motion.div>
                 </NavigationMenuItem>
               ))}
             </NavigationMenuList>
@@ -83,7 +119,7 @@ export const Navbar = () => {
         </nav>
 
         <div className="hidden lg:block">
-          <Button className="bg-[#2b5ba8] hover:bg-[#4a8eff] text-white">
+          <Button className="bg-[#2b5ba8] hover:bg-[#4a8eff] text-white rounded-full">
             Get Started
           </Button>
         </div>
@@ -110,7 +146,10 @@ export const Navbar = () => {
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
                     >
-                      <Button variant="ghost" className="w-full justify-start text-white hover:text-[#4a8eff] text-lg">
+                      <Button
+                        variant="ghost"
+                        className={`w-full justify-start text-white text-lg transition-all rounded-full ${activeSection === href.slice(1) ? "bg-[#4a8eff] text-white scale-105" : "hover:bg-[#4a8eff]"}`}
+                      >
                         {label}
                       </Button>
                     </motion.div>
@@ -118,7 +157,7 @@ export const Navbar = () => {
                 ))}
               </nav>
               <div className="mt-auto pt-4">
-                <Button className="w-full bg-[#2b5ba8] hover:bg-[#4a8eff] text-white">
+                <Button className="w-full bg-[#2b5ba8] hover:bg-[#4a8eff] text-white rounded-full">
                   Get Started
                 </Button>
               </div>

@@ -60,11 +60,11 @@ const pricingTiers: PricingTier[] = [
   }
 ]
 
-export function PricingSection() {
+export function PricingSection({ id }: { id: string }) {
   const [hoveredTier, setHoveredTier] = React.useState<string | null>(null)
 
   return (
-    <section className="py-24 bg-gradient-to-b from-gray-900 via-gray-800 to-gray-900 relative overflow-hidden">
+    <section id={id} className="py-24 bg-gradient-to-b from-gray-900 via-gray-800 to-gray-900 relative overflow-hidden">
       <motion.div 
         className="absolute inset-0 z-0"
         initial={{ opacity: 0 }}
