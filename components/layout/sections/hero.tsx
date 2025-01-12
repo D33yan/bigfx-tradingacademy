@@ -12,7 +12,16 @@ import {
   Linkedin,
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
+
+// Skeleton Loader Component
+const SkeletonLoader = () => (
+  <div className="animate-pulse space-y-4">
+    <div className="h-16 bg-gray-300 rounded-full w-1/2 mx-auto" />
+    <div className="h-8 bg-gray-300 rounded-full w-2/3 mx-auto" />
+    <div className="h-12 bg-gray-300 rounded-full w-1/3 mx-auto" />
+  </div>
+);
 
 export const HeroSection = ({ id }: { id: string }) => {
   const [isVideoPlaying, setIsVideoPlaying] = useState(true);
@@ -24,6 +33,9 @@ export const HeroSection = ({ id }: { id: string }) => {
     "Crash 500 Index -1.2%",
     "Rise/Fall Synthetic +1.8%",
   ]);
+
+  const [videoLoaded, setVideoLoaded] = useState(false);
+  const videoRef = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -38,7 +50,7 @@ export const HeroSection = ({ id }: { id: string }) => {
   }, []);
 
   const toggleVideo = () => {
-    const video = document.querySelector("video");
+    const video = videoRef.current;
     if (video) {
       if (isVideoPlaying) {
         video.pause();
@@ -47,6 +59,11 @@ export const HeroSection = ({ id }: { id: string }) => {
       }
       setIsVideoPlaying(!isVideoPlaying);
     }
+  };
+
+  // Lazy load video background
+  const handleVideoLoad = () => {
+    setVideoLoaded(true);
   };
 
   return (
@@ -83,13 +100,21 @@ export const HeroSection = ({ id }: { id: string }) => {
 
       {/* Video Background */}
       <div className="absolute inset-0 z-0">
+        {!videoLoaded && (
+          <div className="absolute inset-0 bg-gray-900 opacity-50 flex items-center justify-center">
+            <SkeletonLoader />
+          </div>
+        )}
         <video
+          ref={videoRef}
           className="w-full h-full object-cover"
           autoPlay
           loop
           muted
           playsInline
           src="/tradingvidbg.mp4"
+          onLoadedData={handleVideoLoad}
+          style={{ opacity: videoLoaded ? 1 : 0 }}
         />
         <motion.div
           className="absolute inset-0 bg-gradient-to-br from-black/80 via-black/70 to-black/80"
@@ -199,51 +224,30 @@ export const HeroSection = ({ id }: { id: string }) => {
         animate={{ opacity: 1, x: 0 }}
         transition={{ duration: 0.8, delay: 1.6 }}
       >
-        {[
-          {
-            icon: <Twitter size={24} />,
-            href: "https://x.com/louisemmy039?t=2Q9UH4B09BTWnbPEBEv3uw&s=09",
-            color: "#1DA1F2",
-          },
-          {
-            icon: <Instagram size={24} />,
-            href: "https://instagram.com/bigfx",
-            color: "#E1306C",
-          },
-          {
-            icon: <Send size={24} />,
-            href: "https://t.me/BigFx22",
-            color: "#0088cc",
-          },
-          {
-            icon: <Phone size={24} />,
-            href: "https://wa.me/message/45R3MSCOVOEPA1",
-            color: "#25D366",
-          },
-          {
-            icon: <Linkedin size={24} />,
-            href: "https://www.tiktok.com/@big_fxxx?_t=ZM-8skHniMl7eI&_r=1",
-            color: "#0077B5",
-          },
-        ].map((item, index) => (
-          <motion.a
-            key={index}
-            href={item.href}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="p-2 bg-white/10 text-white rounded-full backdrop-blur-sm hover:bg-white/20 transition-all duration-300 group"
-            style={{ backgroundColor: `${item.color}33` }}
-            whileHover={{ scale: 1.1, backgroundColor: item.color }}
-          >
-            <motion.div
-              initial={{ rotate: 0 }}
-              animate={{ rotate: 360 }}
-              transition={{ duration: 0.3, ease: "easeInOut" }}
+        {[{ icon: <Twitter size={24} />, href: "https://x.com/louisemmy039?t=2Q9UH4B09BTWnbPEBEv3uw&s=09", color: "#1DA1F2" },
+          { icon: <Instagram size={24} />, href: "https://instagram.com/bigfx", color: "#E1306C" },
+          { icon: <Send size={24} />, href: "https://t.me/BigFx22", color: "#0088cc" },
+          { icon: <Phone size={24} />, href: "https://wa.me/message/45R3MSCOVOEPA1", color: "#25D366" },
+          { icon: <Linkedin size={24} />, href: "https://www.tiktok.com/@big_fxxx?_t=ZM-8skHniMl7eI&_r=1", color: "#0077B5" }]
+          .map((item, index) => (
+            <motion.a
+              key={index}
+              href={item.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="p-2 bg-white/10 text-white rounded-full backdrop-blur-sm hover:bg-white/20 transition-all duration-300 group"
+              style={{ backgroundColor: `${item.color}33` }}
+              whileHover={{ scale: 1.1, backgroundColor: item.color }}
             >
-              {item.icon}
-            </motion.div>
-          </motion.a>
-        ))}
+              <motion.div
+                initial={{ rotate: 0 }}
+                animate={{ rotate: 360 }}
+                transition={{ duration: 0.3, ease: "easeInOut" }}
+              >
+                {item.icon}
+              </motion.div>
+            </motion.a>
+          ))}
       </motion.div>
     </section>
   );

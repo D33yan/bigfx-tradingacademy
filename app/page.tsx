@@ -46,6 +46,9 @@ function ImpressiveLoader() {
       <div className="relative">
         <Image
           src="/bigfxlogo.jpg"
+          width={40}
+          height={40}
+
           alt="Big FX Logo"
           className="w-20 h-20 rounded-full animate-pulse"
         />

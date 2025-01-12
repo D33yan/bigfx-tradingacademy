@@ -1,22 +1,9 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
-import Link from "next/link";
-import { motion, AnimatePresence } from "framer-motion";
+import React from "react";
 import Image from "next/image";
-import {
-  TrendingUp,
-  Award,
-  Target,
-  Brain,
-  LineChart,
-  ArrowUpRight,
-  DollarSign,
-  ChevronLeft,
-  ChevronRight,
-} from "lucide-react";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+import { TrendingUp, Award, Target, Brain } from "lucide-react";
+import { motion } from "framer-motion";
 
 interface Feature {
   icon: React.ElementType;
@@ -69,11 +56,11 @@ const winningTrades: Trade[] = [
     image: "/eurusdprofits.jpg",
   },
   {
-    pair: "CRASH 300 AND BOOM 300",
+    pair: "CRASH 500",
     profit: "$362",
     percentage: "4.2%",
     date: "2023-05-14",
-    image: "/bandcprofits.jpg",
+    image: "/crash500analysis.jpg",
   },
   {
     pair: "USD/CHF",
@@ -82,88 +69,20 @@ const winningTrades: Trade[] = [
     date: "2023-05-13",
     image: "/usdchfanalysis.jpg",
   },
+  {
+    pair: "boom 500 and crash 500",
+    profit: "$950",
+    percentage: "1.8%",
+    date: "2023-05-13",
+    image: "/boomandcrashprofits.jpg",
+  },
 ];
 
 export function AboutSection({ id }: { id: string }) {
-  const [currentTradeIndex, setCurrentTradeIndex] = useState(0);
-  const [direction, setDirection] = useState(0);
-  const [isAutoPlay, setIsAutoPlay] = useState(true);
-
-  useEffect(() => {
-    let interval: NodeJS.Timeout;
-    if (isAutoPlay) {
-      interval = setInterval(() => {
-        nextTrade();
-      }, 5000); // Change slide every 5 seconds
-    }
-    return () => clearInterval(interval);
-  }, [isAutoPlay, currentTradeIndex]);
-
-  const nextTrade = () => {
-    setDirection(1);
-    setCurrentTradeIndex((prevIndex) => (prevIndex + 1) % winningTrades.length);
-  };
-
-  const prevTrade = () => {
-    setDirection(-1);
-    setCurrentTradeIndex(
-      (prevIndex) =>
-        (prevIndex - 1 + winningTrades.length) % winningTrades.length
-    );
-  };
-
-  const variants = {
-    enter: (direction: number) => ({
-      x: direction > 0 ? 1000 : -1000,
-      opacity: 0,
-      scale: 0.8,
-    }),
-    center: {
-      zIndex: 1,
-      x: 0,
-      opacity: 1,
-      scale: 1,
-    },
-    exit: (direction: number) => ({
-      zIndex: 0,
-      x: direction < 0 ? 1000 : -1000,
-      opacity: 0,
-      scale: 0.8,
-    }),
-  };
-
   return (
     <section id={id} className="py-24 bg-gradient-to-b from-gray-900 via-gray-800 to-gray-900 relative overflow-hidden">
-      <motion.div
-        className="absolute inset-0 z-0"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 2 }}
-      >
-        {[...Array(50)].map((_, i) => (
-          <motion.div
-            key={i}
-            className="absolute bg-blue-500 rounded-full opacity-20"
-            style={{
-              top: `${Math.random() * 100}%`,
-              left: `${Math.random() * 100}%`,
-              width: `${Math.random() * 10 + 5}px`,
-              height: `${Math.random() * 10 + 5}px`,
-            }}
-            animate={{
-              y: [0, Math.random() * 100 - 50],
-              opacity: [0.2, 0.5, 0.2],
-            }}
-            transition={{
-              duration: Math.random() * 10 + 10,
-              repeat: Infinity,
-              repeatType: "reverse",
-            }}
-          />
-        ))}
-      </motion.div>
-
       <div className="container mx-auto px-4 relative z-10">
+        {/* Section Header */}
         <motion.div
           className="text-center mb-16"
           initial={{ opacity: 0, y: 20 }}
@@ -181,39 +100,52 @@ export function AboutSection({ id }: { id: string }) {
           </p>
         </motion.div>
 
-        {/* Added Biography of Big FX (Emmanuel Louis) */}
+        {/* Biography of Big FX (Emmanuel Louis) */}
         <motion.div
-          className="text-center mb-16"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8 }}
-        >
-          <h3 className="text-4xl font-bold text-white mb-6">
-            Meet Emmanuel Louis <span className="text-[#4a8eff]">Big FX</span>
-          </h3>
-          <div className="flex justify-center items-center space-x-8">
-            <Image
-              src="/emmanuel-louis.jpg"  // Use the correct image path for Emmanuel Louis
-              alt="Emmanuel Louis"
-              className="w-48 h-48 rounded-full shadow-lg"
-            />
-            <div className="max-w-lg text-left text-gray-300">
-              <p className="text-lg mb-4">
-                Emmanuel Louis, known in the trading world as Big FX, is a seasoned digital entrepreneur with a
-                deep passion for financial markets. With years of experience in the world of forex and financial
-                trading, Big FX has developed proven strategies that empower traders to excel in various market
-                conditions.
-              </p>
-              <p className="text-lg">
-                Having worked in the digital marketing and fintech space, Big FX understands the intricate
-                connections between market psychology, technical analysis, and risk management. His goal is to
-                make trading accessible and profitable for both novice and seasoned traders alike.
-              </p>
-            </div>
-          </div>
-        </motion.div>
+  className="text-center mb-16 px-4"
+  initial={{ opacity: 0, y: 20 }}
+  whileInView={{ opacity: 1, y: 0 }}
+  viewport={{ once: true }}
+  transition={{ duration: 0.8 }}
+>
+  <h3 className="text-4xl font-bold text-white mb-6">
+    Meet Emmanuel Ojoajogun Jacob{" "}
+    <span className="text-[#4a8eff]">Big FX</span>
+  </h3>
+  <div className="flex flex-col md:flex-row justify-center items-center space-y-8 md:space-y-0 md:space-x-8">
+    {/* Image */}
+    <div className="relative w-60 h-60 md:w-80 md:h-80">
+      <Image
+        src="/agoatofanemma.jpg"
+        alt="Emmanuel Louis"
+        width={320}
+        height={320}
+        className="rounded-full shadow-xl hover:scale-105 transition-transform duration-300"
+      />
+      <div className="absolute inset-0 rounded-full bg-gradient-to-r from-[#4a8eff] to-[#2b5ba8] opacity-30" />
+    </div>
 
+    {/* Text */}
+    <div className="max-w-lg text-left text-gray-300 px-4">
+      <p className="text-lg md:text-xl mb-4">
+        Emmanuel Ojaojogun Jacob, known in the trading world as Big FX, is a
+        seasoned digital entrepreneur with a deep passion for financial markets.
+        With years of experience in the world of forex and financial trading, Big
+        FX has developed proven strategies that empower traders to excel in various
+        market conditions.
+      </p>
+      <p className="text-lg md:text-xl">
+        Having worked in the digital marketing and fintech space, Big FX understands
+        the intricate connections between market psychology, technical analysis, and
+        risk management. His goal is to make trading accessible and profitable for
+        both novice and seasoned traders alike.
+      </p>
+    </div>
+  </div>
+</motion.div>
+
+
+        {/* Features Section */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-24">
           {features.map((feature, index) => (
             <motion.div
@@ -225,11 +157,12 @@ export function AboutSection({ id }: { id: string }) {
               className="relative group"
             >
               <div className="overflow-hidden rounded-2xl shadow-2xl">
+                {/* Image with description inside */}
                 <motion.img
                   src={feature.image}
                   alt={feature.title}
-                  className="w-full h-80 object-cover"
-                  whileHover={{ scale: 1.1 }}
+                  className="w-full h-64 object-cover"
+                  whileHover={{ scale: 1.05 }}
                   transition={{ duration: 0.3 }}
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-gray-900 to-transparent opacity-70" />
@@ -242,9 +175,7 @@ export function AboutSection({ id }: { id: string }) {
                   >
                     <feature.icon className="w-12 h-12 text-[#4a8eff] mb-3" />
                   </motion.div>
-                  <h3 className="text-2xl font-bold text-white mb-2">
-                    {feature.title}
-                  </h3>
+                  <h3 className="text-2xl font-bold text-white mb-2">{feature.title}</h3>
                   <p className="text-gray-300 text-lg">{feature.description}</p>
                 </div>
               </div>
@@ -252,10 +183,66 @@ export function AboutSection({ id }: { id: string }) {
           ))}
         </div>
 
-        {/* Add the rest of the section (winning trades, etc.) */}
+        {/* Winning Trades Section */}
+        {/* Winning Trades Section */}
+<motion.div
+  className="grid grid-cols-1 md:grid-cols-2 gap-8"
+  initial={{ opacity: 0 }}
+  animate={{ opacity: 1 }}
+  exit={{ opacity: 0 }}
+  transition={{
+    opacity: { duration: 1 },
+    x: { duration: 1, type: "spring" },
+  }}
+>
+  {/* Winning Trades Header */}
+  <motion.div
+    className="text-center mb-16"
+    initial={{ opacity: 0, y: 20 }}
+    whileInView={{ opacity: 1, y: 0 }}
+    viewport={{ once: true }}
+    transition={{ duration: 0.8 }}
+  >
+    <h3 className="text-4xl font-bold text-white mb-6">
+      Our <span className="text-[#4a8eff]">Winning Trades</span>
+    </h3>
+    <p className="text-gray-300 text-lg md:text-xl max-w-3xl mx-auto">
+      Check out some of our most successful trades, showcasing our strategies and results across different pairs and assets.
+    </p>
+  </motion.div>
+
+  {/* Map through winningTrades */}
+  {winningTrades.map((trade, index) => (
+    <motion.div
+      key={trade.pair}
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.5, delay: index * 0.1 }}
+      className="relative group"
+    >
+      <div className="overflow-hidden rounded-2xl shadow-2xl">
+        {/* Trade Image */}
+        <motion.img
+          src={trade.image}
+          alt={trade.pair}
+          className="w-full h-64 object-cover"
+          whileHover={{ scale: 1.05 }}
+          transition={{ duration: 0.3 }}
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-gray-900 to-transparent opacity-70" />
+        <div className="absolute bottom-0 left-0 right-0 p-6">
+          <h3 className="text-2xl font-bold text-white mb-2">{trade.pair}</h3>
+          <p className="text-gray-300 text-lg">Profit: {trade.profit}</p>
+          <p className="text-gray-300 text-lg">Percentage: {trade.percentage}</p>
+          <p className="text-gray-300 text-lg">Date: {trade.date}</p>
+        </div>
+      </div>
+    </motion.div>
+  ))}
+</motion.div>
 
       </div>
     </section>
   );
 }
-
