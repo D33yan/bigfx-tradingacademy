@@ -3,8 +3,8 @@
 import React, { useState, useEffect } from "react"
 import Link from "next/link"
 import Image from "next/image"
-import { motion} from "framer-motion"
-import { Menu,} from 'lucide-react'
+import { motion, AnimatePresence } from "framer-motion"
+import { ChevronsDown, Menu, X } from 'lucide-react'
 import {
   Sheet,
   SheetContent,
@@ -69,7 +69,7 @@ export const Navbar = () => {
                 <NavigationMenuItem key={href}>
                   <Link href={href} passHref>
                     <motion.span
-                      className="text-white hover:text-[#4a8eff] transition-colors cursor-pointer text-lg "
+                      className="text-white hover:text-[#4a8eff] transition-colors cursor-pointer text-lg"
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
                     >
@@ -83,7 +83,7 @@ export const Navbar = () => {
         </nav>
 
         <div className="hidden lg:block">
-          <Button className="bg-[#2b5ba8] hover:bg-[#4a8eff] text-white rou">
+          <Button className="bg-[#2b5ba8] hover:bg-[#4a8eff] text-white">
             Get Started
           </Button>
         </div>

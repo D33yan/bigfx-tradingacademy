@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from "framer-motion"
 import { TrendingUp, Award, Target, Brain, LineChart, ArrowUpRight, DollarSign, ChevronLeft, ChevronRight } from 'lucide-react'
 import { Badge } from "@/components/ui/badge"
@@ -58,6 +58,17 @@ const winningTrades: Trade[] = [
 export function AboutSection() {
   const [currentTradeIndex, setCurrentTradeIndex] = useState(0)
   const [direction, setDirection] = useState(0)
+  const [isAutoPlay, setIsAutoPlay] = useState(true)
+
+  useEffect(() => {
+    let interval: NodeJS.Timeout;
+    if (isAutoPlay) {
+      interval = setInterval(() => {
+        nextTrade();
+      }, 5000); // Change slide every 5 seconds
+    }
+    return () => clearInterval(interval);
+  }, [isAutoPlay, currentTradeIndex]);
 
   const nextTrade = () => {
     setDirection(1)
@@ -90,8 +101,37 @@ export function AboutSection() {
   }
 
   return (
-    <section className="py-24 bg-gradient-to-b from-gray-900 via-gray-800 to-gray-900">
-      <div className="container mx-auto px-4">
+    <section className="py-24 bg-gradient-to-b from-gray-900 via-gray-800 to-gray-900 relative overflow-hidden">
+      <motion.div 
+        className="absolute inset-0 z-0"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 2 }}
+      >
+        {[...Array(50)].map((_, i) => (
+          <motion.div
+            key={i}
+            className="absolute bg-blue-500 rounded-full opacity-20"
+            style={{
+              top: `${Math.random() * 100}%`,
+              left: `${Math.random() * 100}%`,
+              width: `${Math.random() * 10 + 5}px`,
+              height: `${Math.random() * 10 + 5}px`,
+            }}
+            animate={{
+              y: [0, Math.random() * 100 - 50],
+              opacity: [0.2, 0.5, 0.2],
+            }}
+            transition={{
+              duration: Math.random() * 10 + 10,
+              repeat: Infinity,
+              repeatType: "reverse",
+            }}
+          />
+        ))}
+      </motion.div>
+
+      <div className="container mx-auto px-4 relative z-10">
         <motion.div 
           className="text-center mb-16"
           initial={{ opacity: 0, y: 20 }}
@@ -119,14 +159,23 @@ export function AboutSection() {
               className="relative group"
             >
               <div className="overflow-hidden rounded-2xl shadow-2xl">
-                <img 
+                <motion.img 
                   src={feature.image} 
                   alt={feature.title}
-                  className="w-full h-80 object-cover transition-transform duration-300 group-hover:scale-110"
+                  className="w-full h-80 object-cover"
+                  whileHover={{ scale: 1.1 }}
+                  transition={{ duration: 0.3 }}
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-gray-900 to-transparent opacity-70" />
                 <div className="absolute bottom-0 left-0 right-0 p-6">
-                  <feature.icon className="w-12 h-12 text-[#4a8eff] mb-3" />
+                  <motion.div
+                    initial={{ scale: 0 }}
+                    whileInView={{ scale: 1 }}
+                    viewport={{ once: true }}
+                    transition={{ type: "spring", stiffness: 260, damping: 20 }}
+                  >
+                    <feature.icon className="w-12 h-12 text-[#4a8eff] mb-3" />
+                  </motion.div>
                   <h3 className="text-2xl font-bold text-white mb-2">{feature.title}</h3>
                   <p className="text-gray-300 text-lg">{feature.description}</p>
                 </div>
@@ -228,7 +277,7 @@ export function AboutSection() {
           <h3 className="text-4xl md:text-5xl font-bold text-white mb-12 text-center">
             Recent <span className="text-[#4a8eff]">Winning Trades</span>
           </h3>
-          <div className="relative h-[600px] overflow-hidden rounded-2xl shadow-2xl">
+          <div className="relative aspect-[16/9] max-w-4xl mx-auto overflow-hidden rounded-2xl shadow-2xl">
             <AnimatePresence initial={false} custom={direction}>
               <motion.div
                 key={currentTradeIndex}
@@ -244,49 +293,83 @@ export function AboutSection() {
                 }}
                 className="absolute w-full h-full"
               >
-                <div className="bg-gray-800/50 border border-gray-700 rounded-2xl overflow-hidden h-full">
-                  <img 
-                    src={winningTrades[currentTradeIndex].image} 
-                    alt={`Trade ${winningTrades[currentTradeIndex].pair}`} 
-                    className="w-full h-3/4 object-cover"
-                  />
-                  <div className="p-8 h-1/4">
-                    <div className="flex justify-between items-start mb-4">
-                      <Badge variant="secondary" className="bg-[#2b5ba8] text-white text-xl px-4 py-2">
-                        {winningTrades[currentTradeIndex].pair}
-                      </Badge>
-                      <motion.div
-                        animate={{ rotate: [0, 360] }}
-                        transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
-                      >
-                        <ArrowUpRight className="text-green-500 w-8 h-8" />
-                      </motion.div>
-                    </div>
-                    <div className="text-4xl font-bold text-white mb-2">{winningTrades[currentTradeIndex].profit}</div>
-                    <div className="text-xl text-gray-400 flex justify-between">
-                      <span>{winningTrades[currentTradeIndex].percentage} Profit</span>
-                      <span>{winningTrades[currentTradeIndex].date}</span>
-                    </div>
+                <motion.img 
+                  src={winningTrades[currentTradeIndex].image} 
+                  alt={`Trade ${winningTrades[currentTradeIndex].pair}`} 
+                  className="w-full h-full object-cover"
+                  initial={{ scale: 1.1, opacity: 0 }}
+                  animate={{ scale: 1, opacity: 1 }}
+                  transition={{ duration: 0.5 }}
+                />
+                <motion.div 
+                  className="absolute bottom-0 left-0 right-0 p-6 text-white"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.2, duration: 0.5 }}
+                >
+                  <div className="flex justify-between items-start mb-2">
+                    <Badge variant="secondary" className="bg-[#2b5ba8] text-white text-lg px-3 py-1">
+                      {winningTrades[currentTradeIndex].pair}
+                    </Badge>
+                    <motion.div
+                      animate={{ rotate: [0, 360] }}
+                      transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+                    >
+                      <ArrowUpRight className="text-green-500 w-6 h-6" />
+                    </motion.div>
                   </div>
-                </div>
+                  <div className="text-3xl font-bold mb-1">{winningTrades[currentTradeIndex].profit}</div>
+                  <div className="text-lg text-gray-300 flex justify-between">
+                    <span>{winningTrades[currentTradeIndex].percentage} Profit</span>
+                    <span>{winningTrades[currentTradeIndex].date}</span>
+                  </div>
+                </motion.div>
+                <motion.div 
+                  className="absolute inset-0 bg-gradient-to-t from-gray-900 via-gray-900/70 to-transparent"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.2, duration: 0.5 }}
+                />
               </motion.div>
             </AnimatePresence>
             <motion.button
-              onClick={prevTrade}
-              className="absolute top-1/2 left-4 transform -translate-y-1/2 bg-white/10 hover:bg-white/20 text-white p-4 rounded-full transition-all duration-300"
+              onClick={() => {
+                prevTrade();
+                setIsAutoPlay(false);
+              }}
+              className="absolute top-1/2 left-4 transform -translate-y-1/2 bg-white/20 hover:bg-white/30 text-white p-2 rounded-full transition-all duration-300"
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.9 }}
             >
-              <ChevronLeft className="w-8 h-8" />
+              <ChevronLeft className="w-6 h-6" />
             </motion.button>
             <motion.button
-              onClick={nextTrade}
-              className="absolute top-1/2 right-4 transform -translate-y-1/2 bg-white/10 hover:bg-white/20 text-white p-4 rounded-full transition-all duration-300"
+              onClick={() => {
+                nextTrade();
+                setIsAutoPlay(false);
+              }}
+              className="absolute top-1/2 right-4 transform -translate-y-1/2 bg-white/20 hover:bg-white/30 text-white p-2 rounded-full transition-all duration-300"
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.9 }}
             >
-              <ChevronRight className="w-8 h-8" />
+              <ChevronRight className="w-6 h-6" />
             </motion.button>
+            <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2">
+              {winningTrades.map((_, index) => (
+                <motion.button
+                  key={index}
+                  className={`w-2 h-2 rounded-full ${
+                    index === currentTradeIndex ? 'bg-[#4a8eff]' : 'bg-gray-400'
+                  }`}
+                  onClick={() => {
+                    setCurrentTradeIndex(index);
+                    setIsAutoPlay(false);
+                  }}
+                  whileHover={{ scale: 1.5 }}
+                  whileTap={{ scale: 0.8 }}
+                />
+              ))}
+            </div>
           </div>
         </motion.div>
 

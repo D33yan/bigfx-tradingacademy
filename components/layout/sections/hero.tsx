@@ -1,10 +1,9 @@
 "use client";
+
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Play, Twitter, Instagram, Send, Phone, Linkedin } from 'lucide-react';
-import { motion} from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { useState, useEffect } from "react";
-import Particles from "react-tsparticles";
-import { loadFull } from "tsparticles";
 
 export const HeroSection = () => {
   const [isVideoPlaying, setIsVideoPlaying] = useState(true);
@@ -41,88 +40,37 @@ export const HeroSection = () => {
     }
   };
 
-  const particlesInit = async (main: any) => {
-    await loadFull(main);
-  };
-
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-      {/* Particle Background */}
-      <Particles
-        id="tsparticles"
-        init={particlesInit}
-        options={{
-          fullScreen: { enable: false },
-          background: {
-            color: {
-              value: "transparent",
-            },
-          },
-          fpsLimit: 120,
-          interactivity: {
-            events: {
-              onClick: {
-                enable: true,
-                mode: "push",
-              },
-              onHover: {
-                enable: true,
-                mode: "repulse",
-              },
-              resize: true,
-            },
-            modes: {
-              push: {
-                quantity: 4,
-              },
-              repulse: {
-                distance: 200,
-                duration: 0.4,
-              },
-            },
-          },
-          particles: {
-            color: {
-              value: "#ffffff",
-            },
-            links: {
-              color: "#ffffff",
-              distance: 150,
-              enable: true,
-              opacity: 0.5,
-              width: 1,
-            },
-            move: {
-              direction: "none",
-              enable: true,
-              outModes: {
-                default: "bounce",
-              },
-              random: false,
-              speed: 2,
-              straight: false,
-            },
-            number: {
-              density: {
-                enable: true,
-                area: 800,
-              },
-              value: 80,
-            },
-            opacity: {
-              value: 0.5,
-            },
-            shape: {
-              type: "circle",
-            },
-            size: {
-              value: { min: 1, max: 5 },
-            },
-          },
-          detectRetina: true,
-        }}
+      {/* Animated Background */}
+      <motion.div 
         className="absolute inset-0 z-0"
-      />
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 2 }}
+      >
+        {[...Array(50)].map((_, i) => (
+          <motion.div
+            key={i}
+            className="absolute bg-blue-500 rounded-full opacity-20"
+            style={{
+              top: `${Math.random() * 100}%`,
+              left: `${Math.random() * 100}%`,
+              width: `${Math.random() * 10 + 5}px`,
+              height: `${Math.random() * 10 + 5}px`,
+            }}
+            animate={{
+              y: [0, Math.random() * 100 - 50],
+              opacity: [0.2, 0.5, 0.2],
+            }}
+            transition={{
+              duration: Math.random() * 10 + 10,
+              repeat: Infinity,
+              repeatType: "reverse",
+            }}
+          />
+        ))}
+      </motion.div>
 
       {/* Video Background */}
       <div className="absolute inset-0 z-0">
@@ -206,24 +154,24 @@ export const HeroSection = () => {
       </div>
 
       <motion.div
-        className="absolute top-4 left-4 z-20"
-        initial={{ opacity: 0, x: -20 }}
-        animate={{ opacity: 1, x: 0 }}
-        transition={{ duration: 0.8, delay: 1.2 }}
-      >
-        {/* <Badge variant="secondary" className="text-sm md:text-base px-4 py-2 bg-gradient-to-r from-[#2b5ba8] to-[#1e4c8f] text-white font-semibold rounded-full shadow-md hover:shadow-lg transition-all duration-300 cursor-pointer">
-          New Trading Course Available
-        </Badge> */}
-      </motion.div>
-
-      <motion.div
         className="absolute bottom-20 left-0 right-0 z-20 overflow-hidden"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, delay: 1.4 }}
       >
-        <div className="flex space-x-4 animate-ticker">
-          {tickerItems.map((item, index) => (
+        <motion.div 
+          className="flex space-x-4"
+          animate={{ x: [0, -100] }}
+          transition={{ 
+            x: {
+              repeat: Infinity,
+              repeatType: "loop",
+              duration: 20,
+              ease: "linear",
+            },
+          }}
+        >
+          {tickerItems.concat(tickerItems).map((item, index) => (
             <div
               key={index}
               className="px-4 py-2 bg-white/10 text-white rounded-full text-sm font-semibold backdrop-blur-sm whitespace-nowrap"
@@ -231,7 +179,7 @@ export const HeroSection = () => {
               {item}
             </div>
           ))}
-        </div>
+        </motion.div>
       </motion.div>
 
       <motion.div
