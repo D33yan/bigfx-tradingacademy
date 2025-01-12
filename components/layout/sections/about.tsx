@@ -114,27 +114,27 @@ export function AboutSection({ id }: { id: string }) {
   </h3>
   <div className="flex flex-col md:flex-row justify-center items-center space-y-8 md:space-y-0 md:space-x-8">
     {/* Image */}
-    <div className="relative w-60 h-60 md:w-80 md:h-80">
+    <div className="relative w-24 h-24 sm:w-32 sm:h-32 md:w-80 md:h-80 mb-4 md:mb-0">
       <Image
         src="/agoatofanemma.jpg"
         alt="Emmanuel Louis"
-        width={320}
-        height={320}
+        width={200}
+        height={200}
         className="rounded-full shadow-xl hover:scale-105 transition-transform duration-300"
       />
-      <div className="absolute inset-0 rounded-full bg-gradient-to-r from-[#4a8eff] to-[#2b5ba8] opacity-30" />
+      
     </div>
 
     {/* Text */}
     <div className="max-w-lg text-left text-gray-300 px-4">
-      <p className="text-lg md:text-xl mb-4">
+      <p className="text-base md:text-lg mb-4">
         Emmanuel Ojaojogun Jacob, known in the trading world as Big FX, is a
         seasoned digital entrepreneur with a deep passion for financial markets.
         With years of experience in the world of forex and financial trading, Big
         FX has developed proven strategies that empower traders to excel in various
         market conditions.
       </p>
-      <p className="text-lg md:text-xl">
+      <p className="text-base md:text-lg">
         Having worked in the digital marketing and fintech space, Big FX understands
         the intricate connections between market psychology, technical analysis, and
         risk management. His goal is to make trading accessible and profitable for
@@ -143,6 +143,8 @@ export function AboutSection({ id }: { id: string }) {
     </div>
   </div>
 </motion.div>
+
+
 
 
         {/* Features Section */}
