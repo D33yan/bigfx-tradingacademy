@@ -113,16 +113,19 @@ export function AboutSection({ id }: { id: string }) {
     <span className="text-[#4a8eff]">Big FX</span>
   </h3>
   <div className="flex flex-col md:flex-row justify-center items-center space-y-8 md:space-y-0 md:space-x-8">
-    {/* Image */}
-    <div className="relative w-24 h-24 sm:w-32 sm:h-32 md:w-80 md:h-80 mb-4 md:mb-0">
+    {/* Image with irregular shape */}
+    <div className="relative w-24 h-24 sm:w-32 sm:h-32 md:w-80 md:h-80 mb-4 md:mb-0 overflow-hidden">
       <Image
         src="/agoatofanemma.jpg"
         alt="Emmanuel Louis"
         width={200}
         height={200}
-        className="rounded-full shadow-xl hover:scale-105 transition-transform duration-300"
+        className="object-cover rounded-full shadow-xl hover:scale-105 transition-transform duration-300"
+        style={{
+          clipPath: 'polygon(50% 0%, 100% 25%, 75% 100%, 25% 100%, 0% 25%)', // Custom irregular shape
+        }}
       />
-      
+      <div className="absolute inset-0 rounded-full bg-gradient-to-r from-[#4a8eff] to-[#2b5ba8] opacity-30" />
     </div>
 
     {/* Text */}
@@ -143,6 +146,7 @@ export function AboutSection({ id }: { id: string }) {
     </div>
   </div>
 </motion.div>
+
 
 
 
