@@ -7,11 +7,11 @@ export async function GET() {
   const staticPages: string[] = ['/', '/about', '/contact'];
 
   // Fetch dynamic pages (replace with your real API endpoint)
-  const dynamicPages = await fetch('https://api.example.com/products')
-    .then((res) => res.json())
-    .then((products: { slug: string }[]) => products.map((product) => `/product/${product.slug}`));
+//   const dynamicPages = await fetch('https://api.example.com/products')
+//     .then((res) => res.json())
+//     .then((products: { slug: string }[]) => products.map((product) => `/product/${product.slug}`));
 
-  const allPages = [...staticPages, ...dynamicPages];
+  const allPages = [...staticPages, ];
 
   const sitemap = `
     <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
